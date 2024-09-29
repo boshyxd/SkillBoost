@@ -92,6 +92,9 @@ Ensure that the response is a valid JSON object without any additional text or f
       ]
     });
 
+    // Add more logging
+    console.log('Raw AI response:', message.content[0].text);
+
     let rawContent = message.content[0].text;
     
     // Clean and validate the JSON
@@ -130,6 +133,10 @@ Ensure that the response is a valid JSON object without any additional text or f
     });
   } catch (error) {
     console.error('Error generating skill content:', error);
-    res.status(500).json({ message: 'Error generating skill content', error: error.message });
+    // Log more details about the error
+    if (error.response) {
+      console.error('Error response:', error.response.data);
+    }
+    res.status(500).json({ message: 'Error generating skill content', error: error.message, stack: error.stack });
   }
 }

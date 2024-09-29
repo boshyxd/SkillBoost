@@ -145,55 +145,61 @@ async function createDefaultSkillsAndLessons() {
 }
 
 export default async function handler(req, res) {
-  if (req.method === 'GET') {
-    try {
-      if (!db) {
-        throw new Error('Firestore is not initialized');
-      }
+  try {
+    if (req.method === 'GET') {
+      try {
+        if (!db) {
+          console.error('Firestore is not initialized');
+          throw new Error('Firestore is not initialized');
+        }
 
-      // Verify the Firebase ID token
-      const { authorization } = req.headers;
-      if (!authorization || !authorization.startsWith('Bearer ')) {
-        return res.status(401).json({ error: 'Unauthorized' });
-      }
-      const idToken = authorization.split('Bearer ')[1];
-      await auth.verifyIdToken(idToken);
+        // Verify the Firebase ID token
+        const { authorization } = req.headers;
+        if (!authorization || !authorization.startsWith('Bearer ')) {
+          return res.status(401).json({ error: 'Unauthorized' });
+        }
+        const idToken = authorization.split('Bearer ')[1];
+        await auth.verifyIdToken(idToken);
 
-      await createDefaultSkillsAndLessons();
+        await createDefaultSkillsAndLessons();
 
-      console.log('Fetching skills from Firestore...');
-      const skillsSnapshot = await db.collection('skills').get();
-      console.log('Skills snapshot received:', skillsSnapshot.size, 'documents');
-      
-      const skills = await Promise.all(skillsSnapshot.docs.map(async (doc) => {
-        const skillData = doc.data();
-        const lessonsSnapshot = await db.collection('lessons')
-          .where('skillId', '==', doc.id)
-          .get();
+        console.log('Fetching skills from Firestore...');
+        const skillsSnapshot = await db.collection('skills').get();
+        console.log('Skills snapshot received:', skillsSnapshot.size, 'documents');
         
-        let lessons = lessonsSnapshot.docs.map(lessonDoc => ({
-          id: lessonDoc.id,
-          ...lessonDoc.data()
+        const skills = await Promise.all(skillsSnapshot.docs.map(async (doc) => {
+          const skillData = doc.data();
+          const lessonsSnapshot = await db.collection('lessons')
+            .where('skillId', '==', doc.id)
+            .get();
+          
+          let lessons = lessonsSnapshot.docs.map(lessonDoc => ({
+            id: lessonDoc.id,
+            ...lessonDoc.data()
+          }));
+
+          // Sort lessons by order field in JavaScript
+          lessons.sort((a, b) => a.order - b.order);
+
+          return { 
+            id: doc.id, 
+            ...skillData,
+            lessons,
+          };
         }));
 
-        // Sort lessons by order field in JavaScript
-        lessons.sort((a, b) => a.order - b.order);
-
-        return { 
-          id: doc.id, 
-          ...skillData,
-          lessons,
-        };
-      }));
-
-      console.log('Processed skills:', skills.length);
-      res.status(200).json(skills);
-    } catch (error) {
-      console.error('Error fetching skills:', error);
-      res.status(500).json({ error: 'Error fetching skills', details: error.message });
+        console.log('Processed skills:', skills.length);
+        res.status(200).json(skills);
+      } catch (error) {
+        console.error('Error fetching skills:', error);
+        res.status(500).json({ error: 'Error fetching skills', details: error.message });
+      }
+    } else {
+      res.setHeader('Allow', ['GET']);
+      res.status(405).end(`Method ${req.method} Not Allowed`);
     }
-  } else {
-    res.setHeader('Allow', ['GET']);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
+  } catch (error) {
+    console.error('Error in /api/skills:', error);
+    res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 }

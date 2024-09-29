@@ -1,5 +1,6 @@
 import { Anthropic } from '@anthropic-ai/sdk';
 import { v4 as uuidv4 } from 'uuid'; // Add this import at the top of the file
+import { db } from '../../lib/firebase-admin';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -26,17 +27,24 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { interests } = req.body;
+  const { interests, userId } = req.body;
 
   if (!interests || interests.trim().length < 5) {
     return res.status(400).json({ message: 'Please provide more detailed interests for accurate recommendations.' });
   }
 
   try {
+    // Store user interests in Firebase
+    await db.collection('userInterests').add({
+      userId,
+      interest: interests,
+      timestamp: new Date()
+    });
+
     const message = await anthropic.messages.create({
-      model: "claude-3-sonnet-20240229",
-      max_tokens: 4000,
-      temperature: 0.2,
+      model: "claude-3-5-sonnet-20240620",
+      max_tokens: 1000,
+      temperature: 0.7,
       messages: [
         {
           role: "user",

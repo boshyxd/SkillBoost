@@ -1,8 +1,10 @@
 import useSWR from 'swr'
 import { fetchProgress } from '../lib/api'
+import { useAuth } from './useAuth'
 
 export function useProgress() {
-  const { data, error, mutate } = useSWR('/api/progress', fetchProgress)
+  const { user } = useAuth()
+  const { data, error, mutate } = useSWR(user ? '/api/progress' : null, fetchProgress)
 
   return {
     progress: data,

@@ -24,15 +24,20 @@ self.__BUILD_MANIFEST = {
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/lessons/[id]/[lessonId]": [
+    "/explore": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/lessons/[id]/[lessonId].js"
+      "static/chunks/pages/explore.js"
     ],
-    "/skills/[id]": [
+    "/profile": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/skills/[id].js"
+      "static/chunks/pages/profile.js"
+    ],
+    "/progress": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/progress.js"
     ]
   },
   "ampFirstPages": []

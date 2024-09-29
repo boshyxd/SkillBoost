@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useAuth } from '../../hooks/useAuth'
+import AuthNav from './AuthNav'
 
 const navItems = [
   { href: '/', label: 'Home', icon: '🏠' },
@@ -10,6 +12,7 @@ const navItems = [
 
 export default function BottomNav() {
   const router = useRouter()
+  const { user } = useAuth()
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
@@ -24,6 +27,9 @@ export default function BottomNav() {
             </Link>
           </li>
         ))}
+        <li>
+          <AuthNav />
+        </li>
       </ul>
     </nav>
   )
