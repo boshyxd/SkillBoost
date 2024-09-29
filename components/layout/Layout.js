@@ -4,11 +4,11 @@ import BottomNav from '../navigation/BottomNav'
 
 export default function Layout({ children }) {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main>{children}</main>
+      <main className="flex-grow">{children}</main>
       <BottomNav />
       <Footer />
-    </>
+    </div>
   )
 }

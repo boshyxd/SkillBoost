@@ -1,0 +1,12 @@
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/skills/[id]": "pages/skills/[id].js",
+  "/lessons/[id]/[lessonId]": "pages/lessons/[id]/[lessonId].js",
+  "/": "pages/index.js",
+  "/api/generate-skill": "pages/api/generate-skill.js",
+  "/api/skills": "pages/api/skills.js",
+  "/api/recommend-skills": "pages/api/recommend-skills.js",
+  "/api/youtube-video": "pages/api/youtube-video.js"
+}
