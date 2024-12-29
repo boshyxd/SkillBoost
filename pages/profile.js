@@ -132,7 +132,7 @@ function RecentSkillCard({ skill }) {
       transition={{ type: "spring", stiffness: 300 }}
     >
       <h3 className="text-xl font-semibold mb-2">{skill.skill}</h3>
-      <p className="text-gray-600 mb-4">{skill.explanation.substring(0, 100)}...</p>
+      <p className="text-gray-600 mb-4">{skill.explanation ? skill.explanation.substring(0, 100) + '...' : ''}</p>
       <div className="flex justify-between items-center">
         <span className="text-sm text-blue-500 font-semibold">{skill.matchPercentage}% Match</span>
         <motion.button 
