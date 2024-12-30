@@ -1,1 +1,11 @@
-{}
+{
+  "/_app": "pages/_app.js",
+  "/_error": "pages/_error.js",
+  "/_document": "pages/_document.js",
+  "/create-lesson": "pages/create-lesson.js",
+  "/progress": "pages/progress.js",
+  "/api/progress": "pages/api/progress.js",
+  "/profile": "pages/profile.js",
+  "/explore": "pages/explore.js",
+  "/": "pages/index.js"
+}

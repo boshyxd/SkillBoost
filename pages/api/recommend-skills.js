@@ -1,10 +1,6 @@
-import { Anthropic } from '@anthropic-ai/sdk';
-import { v4 as uuidv4 } from 'uuid'; // Add this import at the top of the file
+import { v4 as uuidv4 } from 'uuid';
 import { db } from '../../lib/firebase-admin';
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+import { generateAIResponse } from '../../lib/openrouter';
 
 const availableSkills = [
   { id: "web-development", name: "Web Development" },
@@ -27,54 +23,37 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { interests, userId } = req.body;
-
-  if (!interests || interests.trim().length < 5) {
-    return res.status(400).json({ message: 'Please provide more detailed interests for accurate recommendations.' });
-  }
-
   try {
-    // Store user interests in Firebase
-    await db.collection('userInterests').add({
-      userId,
-      interest: interests,
-      timestamp: new Date()
-    });
+    const { interests, userId } = req.body;
 
-    const message = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20240620",
-      max_tokens: 1000,
-      temperature: 0.7,
-      messages: [
-        {
-          role: "user",
-          content: `Based on the following user interests, recommend 4-6 skills. Include skills from this list if relevant: ${availableSkills.map(skill => skill.name).join(", ")}. Also suggest additional skills not in the list that might be relevant. For each recommended skill, provide a match percentage (0-100) indicating how well it aligns with the user's interests, and a brief (20-30 words) explanation of why it's a good match. Format the response as a JSON array of objects, each containing 'skill', 'matchPercentage', and 'explanation' properties. If the interests provided are too vague or short, return an empty array.
+    if (!interests || !userId) {
+      return res.status(400).json({ message: 'Interests and userId are required' });
+    }
 
-User interests: ${interests}
+    const systemMessage = `You are an AI skill recommender for SkillBoost, a learning platform. Based on the user's interests, recommend 3-5 relevant skills they should learn. Format your response as a JSON array of objects, where each object has these properties:
+    - skill: The name of the skill
+    - explanation: A brief explanation of why this skill matches their interests
+    - matchPercentage: A number between 0-100 indicating how well this matches their interests
+    
+    Example format:
+    [
+      {
+        "skill": "Web Development",
+        "explanation": "Given your interest in creating visual interfaces...",
+        "matchPercentage": 85
+      }
+    ]`;
 
-Response format example:
-[
-  {
-    "skill": "Web Development",
-    "matchPercentage": 85,
-    "explanation": "Your interest in creating digital experiences aligns well with web development, allowing you to build interactive websites and applications."
-  },
-  {
-    "skill": "Data Science",
-    "matchPercentage": 70,
-    "explanation": "Your analytical mindset and curiosity about patterns make data science a great fit for exploring insights in large datasets."
-  }
-]
+    const messages = [
+      {
+        role: 'user',
+        content: `These are my interests: ${interests}. Please recommend relevant skills to learn.`
+      }
+    ];
 
-Provide recommendations even if the interests are not directly related to technology, and limit the response to a maximum of 6 skills. Ensure the response is a valid JSON array.`
-        }
-      ]
-    });
-
-    let rawContent = message.content[0].text;
-    console.log('Raw AI response:', rawContent);
-
+    const rawContent = await generateAIResponse(messages, systemMessage);
     let jsonContent = extractJSONFromString(rawContent);
+    
     if (!jsonContent) {
       console.error('Failed to extract JSON from AI response');
       return res.status(500).json({ message: 'Invalid AI response structure' });

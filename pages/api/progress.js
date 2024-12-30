@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       const decodedToken = await auth.verifyIdToken(token);
       const userId = decodedToken.uid;
 
-      const progressSnapshot = await db.collection('progress').where('userId', '==', userId).get();
+      const progressSnapshot = await db.collection('users').doc(userId).collection('progress').get();
       const progress = progressSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
