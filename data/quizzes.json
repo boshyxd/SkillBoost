@@ -1,0 +1,94 @@
+{
+  "quizzes": {
+    "web-development": {
+      "intro-to-html": {
+        "id": "html-basics-quiz",
+        "title": "HTML Basics Quiz",
+        "questions": [
+          {
+            "id": "q1",
+            "question": "What does HTML stand for?",
+            "options": [
+              "Hyper Text Markup Language",
+              "High Tech Modern Language",
+              "Hyper Transfer Markup Language",
+              "Home Tool Markup Language"
+            ],
+            "correctAnswer": 0
+          },
+          {
+            "id": "q2",
+            "question": "Which tag is used for creating a paragraph in HTML?",
+            "options": [
+              "<paragraph>",
+              "<p>",
+              "<para>",
+              "<text>"
+            ],
+            "correctAnswer": 1
+          }
+        ]
+      }
+    },
+    "javascript": {
+      "js-basics": {
+        "id": "js-basics-quiz",
+        "title": "JavaScript Basics Quiz",
+        "questions": [
+          {
+            "id": "q1",
+            "question": "Which keyword is used to declare a variable in JavaScript?",
+            "options": [
+              "var",
+              "let",
+              "const",
+              "All of the above"
+            ],
+            "correctAnswer": 3
+          },
+          {
+            "id": "q2",
+            "question": "What is the result of '2' + 2 in JavaScript?",
+            "options": [
+              "4",
+              "22",
+              "NaN",
+              "Error"
+            ],
+            "correctAnswer": 1
+          }
+        ]
+      }
+    },
+    "react": {
+      "react-intro": {
+        "id": "react-intro-quiz",
+        "title": "React Introduction Quiz",
+        "questions": [
+          {
+            "id": "q1",
+            "question": "What is React?",
+            "options": [
+              "A JavaScript library for building user interfaces",
+              "A programming language",
+              "A database management system",
+              "A web server"
+            ],
+            "correctAnswer": 0
+          },
+          {
+            "id": "q2",
+            "question": "What is JSX?",
+            "options": [
+              "A JavaScript engine",
+              "A syntax extension for JavaScript",
+              "A package manager",
+              "A testing framework"
+            ],
+            "correctAnswer": 1
+          }
+        ]
+      }
+    }
+  }
+} 

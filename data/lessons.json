@@ -1,0 +1,58 @@
+{
+  "lessons": {
+    "web-development": [
+      {
+        "id": "intro-to-html",
+        "title": "Introduction to HTML",
+        "description": "Learn the basics of HTML markup language",
+        "content": "HTML (HyperText Markup Language) is the standard markup language for creating web pages...",
+        "duration": "30 minutes",
+        "order": 1
+      },
+      {
+        "id": "css-basics",
+        "title": "CSS Fundamentals",
+        "description": "Style your web pages with CSS",
+        "content": "CSS (Cascading Style Sheets) is used to style and layout web pages...",
+        "duration": "45 minutes",
+        "order": 2
+      }
+    ],
+    "javascript": [
+      {
+        "id": "js-basics",
+        "title": "JavaScript Basics",
+        "description": "Learn the fundamentals of JavaScript",
+        "content": "JavaScript is a programming language that enables interactive web pages...",
+        "duration": "60 minutes",
+        "order": 1
+      },
+      {
+        "id": "js-functions",
+        "title": "JavaScript Functions",
+        "description": "Master JavaScript functions and scope",
+        "content": "Functions are one of the fundamental building blocks in JavaScript...",
+        "duration": "45 minutes",
+        "order": 2
+      }
+    ],
+    "react": [
+      {
+        "id": "react-intro",
+        "title": "Introduction to React",
+        "description": "Get started with React",
+        "content": "React is a JavaScript library for building user interfaces...",
+        "duration": "45 minutes",
+        "order": 1
+      },
+      {
+        "id": "react-components",
+        "title": "React Components",
+        "description": "Learn about React components and props",
+        "content": "Components are the building blocks of React applications...",
+        "duration": "60 minutes",
+        "order": 2
+      }
+    ]
+  }
+} 
