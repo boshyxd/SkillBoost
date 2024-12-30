@@ -1,11 +1,1 @@
-{
-  "/_app": "pages/_app.js",
-  "/_error": "pages/_error.js",
-  "/_document": "pages/_document.js",
-  "/create-lesson": "pages/create-lesson.js",
-  "/progress": "pages/progress.js",
-  "/api/progress": "pages/api/progress.js",
-  "/profile": "pages/profile.js",
-  "/explore": "pages/explore.js",
-  "/": "pages/index.js"
-}
+{"/_app":"pages/_app.js","/_document":"pages/_document.js","/api/ai-companion":"pages/api/ai-companion.js","/api/generate-insight":"pages/api/generate-insight.js","/api/generate-skill":"pages/api/generate-skill.js","/api/lessons":"pages/api/lessons.js","/api/lessons/[id]":"pages/api/lessons/[id].js","/api/lessons/[id]/[lessonId]":"pages/api/lessons/[id]/[lessonId].js","/api/lessons/generate-quiz":"pages/api/lessons/generate-quiz.js","/api/progress":"pages/api/progress.js","/api/quizzes/[id]":"pages/api/quizzes/[id].js","/api/quiz-results":"pages/api/quiz-results.js","/api/recommend-skills":"pages/api/recommend-skills.js","/api/skills":"pages/api/skills.js","/api/skills/[id]":"pages/api/skills/[id].js","/api/test":"pages/api/test.js","/api/user-skills":"pages/api/user-skills.js","/api/youtube-video":"pages/api/youtube-video.js","/create-lesson":"pages/create-lesson.html","/explore":"pages/explore.html","/":"pages/index.html","/lessons/[id]/[lessonId]":"pages/lessons/[id]/[lessonId].html","/login":"pages/login.html","/profile":"pages/profile.html","/progress":"pages/progress.html","/quiz-results":"pages/quiz-results.html","/quiz/[id]":"pages/quiz/[id].html","/register":"pages/register.html","/skills/[id]":"pages/skills/[id].html","/_error":"pages/_error.js","/404":"pages/404.html"}
