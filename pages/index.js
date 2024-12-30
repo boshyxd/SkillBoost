@@ -11,20 +11,35 @@ function Home() {
   const [isNavigating, setIsNavigating] = useState(false);
 
   useEffect(() => {
+    let mounted = true;
+
     const handleNavigation = async () => {
-      if (!loading && !isNavigating) {
+      if (!loading && !isNavigating && mounted) {
         setIsNavigating(true);
         try {
           const path = user ? '/explore' : '/login';
-          await router.replace(path, undefined, { shallow: true });
+          // Add a small delay to prevent rapid navigation
+          await new Promise(resolve => setTimeout(resolve, 100));
+          if (mounted) {
+            await router.replace(path, undefined, { 
+              shallow: true,
+              scroll: false 
+            });
+          }
         } catch (error) {
           console.error('Navigation error:', error);
-          setIsNavigating(false);
+          if (mounted) {
+            setIsNavigating(false);
+          }
         }
       }
     };
 
     handleNavigation();
+
+    return () => {
+      mounted = false;
+    };
   }, [user, loading, router, isNavigating]);
 
   return (
