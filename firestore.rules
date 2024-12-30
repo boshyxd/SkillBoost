@@ -2,43 +2,70 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow users to read their own data
-    match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId;
-      allow write: if request.auth != null && request.auth.uid == userId;
-      
-      // Allow access to user's skills
-      match /skills/{skillId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
-      
-      // Allow access to user's progress
-      match /progress/{progressId} {
-        allow read, write: if request.auth != null && request.auth.uid == userId;
-      }
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
     }
-    
-    // Allow reading public skills data
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Match any document in the 'skills' collection and its subcollections
     match /skills/{skillId} {
-      allow read: if true;
-      allow write: if request.auth != null && request.auth.token.admin == true;
+      allow read: if isAuthenticated();
+      allow write: if false; // Assuming skills are only created/updated by admins
+      
+      // Add this rule for the nested lessons subcollection
+      match /lessons/{lessonId} {
+        allow read: if isAuthenticated();
+        allow write: if false;
+      }
     }
-    
-    // Allow reading public lessons
-    match /lessons/{lessonId} {
-      allow read: if true;
-      allow write: if request.auth != null && request.auth.token.admin == true;
+
+    // Match any document in the 'generatedSkills' collection
+    match /generatedSkills/{skillId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
     }
-    
-    // Allow user skills collection access
-    match /userSkills/{document=**} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.uid == resource.data.userId;
+
+    // Match any document in the 'users' collection and its subcollections
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+      
+      // Add these rules for the nested progress and skillProgress subcollections
+      match /progress/{progressId} {
+        allow read, write: if isOwner(userId);
+      }
+      
+      match /skillProgress/{skillId} {
+        allow read, write: if isOwner(userId);
+      }
     }
-    
-    // Allow aggregation queries
-    match /{document=**} {
-      allow read: if request.auth != null;
+
+    // Allow public aggregation queries on users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (
+        request.query is list ||  // Allow list operations
+        request.query.aggregations.size() > 0  // Allow aggregation queries
+      );
+    }
+
+    // Match any document in the 'userSkills' collection
+    match /userSkills/{skillId} {
+      allow read: if isAuthenticated() && request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+
+    // Allow aggregation queries for authenticated users
+    match /{collection}/{document=**} {
+      allow read: if isAuthenticated() && (
+        collection == 'skills' || 
+        collection == 'generatedSkills' || 
+        (collection == 'userSkills' && request.auth.uid == resource.data.userId)
+      );
     }
   }
 } 
