@@ -1,0 +1,54 @@
+{
+  "achievements": {
+    "first_lesson": {
+      "id": "first_lesson",
+      "title": "First Step",
+      "description": "Complete your first lesson",
+      "icon": "🎯",
+      "condition": {
+        "type": "lesson_completed",
+        "count": 1
+      }
+    },
+    "quiz_master": {
+      "id": "quiz_master",
+      "title": "Quiz Master",
+      "description": "Score 100% on any quiz",
+      "icon": "🏆",
+      "condition": {
+        "type": "perfect_quiz",
+        "count": 1
+      }
+    },
+    "skill_unlocked": {
+      "id": "skill_unlocked",
+      "title": "Skill Unlocked",
+      "description": "Complete all lessons in a skill path",
+      "icon": "🌟",
+      "condition": {
+        "type": "skill_completed",
+        "count": 1
+      }
+    },
+    "fast_learner": {
+      "id": "fast_learner",
+      "title": "Fast Learner",
+      "description": "Complete 5 lessons in a single day",
+      "icon": "⚡",
+      "condition": {
+        "type": "lessons_per_day",
+        "count": 5
+      }
+    },
+    "persistent": {
+      "id": "persistent",
+      "title": "Persistent",
+      "description": "Study for 7 consecutive days",
+      "icon": "🔥",
+      "condition": {
+        "type": "daily_streak",
+        "count": 7
+      }
+    }
+  }
+} 
