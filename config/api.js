@@ -1,10 +1,10 @@
 const isDev = process.env.NODE_ENV === 'development';
 
 // In development, use local API routes
-// In production, use the deployed API URL
+// In production, use Firebase Functions
 export const API_BASE_URL = isDev 
   ? '/api' 
-  : 'https://skillboost-api.vercel.app/api';
+  : 'https://us-central1-skillboost-d8d16.cloudfunctions.net/api';
 
 export const getApiUrl = (path) => {
   // Remove leading slash if present
